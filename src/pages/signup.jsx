@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 import { toast } from 'sonner'
@@ -61,7 +61,8 @@ const signupSchema = z
   })
 
 const SignupPage = () => {
-  const [user, setUser] = useState()
+  const [user, setUser] = useState(null)
+
   const signupMutation = useMutation({
     mutationKey: ['signup'],
     mutationFn: async (variables) => {
@@ -86,13 +87,38 @@ const SignupPage = () => {
     },
   })
 
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken')
+        const refreshToken = localStorage.getItem('refreshToken')
+        if (!accessToken && !refreshToken) return
+
+        const response = await api.get('/users', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+
+        setUser(response.data)
+      } catch (error) {
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+        console.error(error)
+      }
+    }
+
+    init()
+  }, [])
+
   const handleSubmit = (data) => {
     signupMutation.mutate(data, {
       onSuccess: (createdUser) => {
+        console.log(createdUser)
         const accessToken = createdUser.tokens.accessToken
         const refreshToken = createdUser.tokens.refreshToken
         setUser(createdUser)
-        localStorage.setItem('accessToekn', accessToken)
+        localStorage.setItem('accessToken', accessToken)
         localStorage.setItem('refreshToken', refreshToken)
         toast.success('Conta criada com sucesso!')
       },
