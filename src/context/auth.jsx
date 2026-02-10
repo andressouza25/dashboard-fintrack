@@ -23,9 +23,9 @@ const setTokens = (tokens) => {
   localStorage.setItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY, tokens.refreshToken)
 }
 
-const removeTokens = (tokens) => {
-  localStorage.removeItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY, tokens.accessToken)
-  localStorage.removeItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY, tokens.refreshToken)
+const removeTokens = () => {
+  localStorage.removeItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY)
+  localStorage.removeItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY)
 }
 
 export const AuthContextProvider = ({ children }) => {
@@ -71,7 +71,6 @@ export const AuthContextProvider = ({ children }) => {
         setUser(response.data)
       } catch (error) {
         setUser(null)
-        removeTokens()
         console.error(error)
       } finally {
         setIsInitializing(false)
