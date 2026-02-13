@@ -1,3 +1,5 @@
+import queryString from 'query-string'
+
 import { protectedApi } from '@/lib/axios'
 
 export const TransactionService = {
@@ -11,6 +13,18 @@ export const TransactionService = {
    */
   create: async (input) => {
     const response = await protectedApi.post('/transactions', input)
+    return response.data
+  },
+  /**
+   * Retorna as transações do usuário autenticado
+   * @param {Object} input
+   * @param {string} input.from - Data inicial (YYYY-MM-DD)
+   * @param {string} input.to - Data final (YYYY-MM-DD)
+   */
+  getAll: async (input) => {
+    const query = queryString.stringify({ from: input.from, to: input.to })
+    const response = await protectedApi.get(`/transactions?${query}`)
+
     return response.data
   },
 }
