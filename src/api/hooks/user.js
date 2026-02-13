@@ -4,6 +4,9 @@ import { UserService } from '@/api/services/user'
 import { useAuthContext } from '@/context/auth'
 
 export const getUserBalanceQueryKey = ({ userId, from, to }) => {
+  if (!from || !to) {
+    return ['balance', userId]
+  }
   return ['balance', userId, from, to]
 }
 
@@ -15,6 +18,6 @@ export const useGetUserBalance = ({ from, to }) => {
       return UserService.getBalance({ from, to })
     },
     staleTime: 1000 * 60 * 5,
-    enabled: Boolean(from) & Boolean(to) && Boolean(user.id),
+    enabled: Boolean(from) && Boolean(to) && Boolean(user.id),
   })
 }

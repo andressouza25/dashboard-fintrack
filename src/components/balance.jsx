@@ -1,7 +1,7 @@
 import { TrendingUpIcon, Wallet2Icon } from 'lucide-react'
 import { useSearchParams } from 'react-router'
 
-import useGetUserBalance from '@/api/hooks/user'
+import { useGetUserBalance } from '@/api/hooks/user'
 
 import BalanceItem from './balance-item'
 
