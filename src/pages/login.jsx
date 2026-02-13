@@ -1,7 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { Loader2Icon } from 'lucide-react'
 import { Link, Navigate } from 'react-router'
-import z from 'zod'
 
 import PasswordInput from '@/components/password-input'
 import { Button } from '@/components/ui/button'
@@ -22,33 +20,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useAuthContext } from '@/context/auth'
-
-const loginSchema = z.object({
-  email: z
-    .string()
-    .email({
-      message: 'O E-mail é obrigatório.',
-    })
-    .trim()
-    .min(1, {
-      message: 'O E-mail é obrigatório.',
-    }),
-  password: z.string().trim().min(6, {
-    message: 'A senha deve ter no mínimo 6 caracteres.',
-  }),
-})
+import { useLoginForm } from '@/forms/hooks/user'
 
 const LoginPage = () => {
   const { user, login, isInitializing } = useAuthContext()
-
-  const form = useForm({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  })
-
+  const { form } = useLoginForm()
   const handleSubmit = (data) => login(data)
 
   if (isInitializing) return null
@@ -92,7 +68,12 @@ const LoginPage = () => {
               />
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Fazer login</Button>
+              <Button className="w-full" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting && (
+                  <Loader2Icon className="animate-spin" />
+                )}
+                Fazer login
+              </Button>
             </CardFooter>
           </Card>
         </form>
