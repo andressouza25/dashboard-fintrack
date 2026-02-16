@@ -7,6 +7,8 @@ Fintrack é uma aplicação moderna para gestão financeira pessoal, permitindo 
 Acesse a aplicação em produção:
 [https://fintrack-nu-rosy.vercel.app](https://fintrack-nu-rosy.vercel.app)
 
+<img width="1898" height="905" alt="image" src="https://github.com/user-attachments/assets/5a6214f2-b857-4c06-903b-0bdcd0ff83c9" />
+
 ## ✨ Funcionalidades
 
 - **Dashboard Financeiro**: Visão geral do saldo atual e movimentações.
